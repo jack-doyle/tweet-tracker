@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Faster+One:100,300,400,700" rel="stylesheet">
+</head>
+
+<style>
+  body {
+    background-color: #fff;
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 400;
+    font-family: 'Faster One';
+  }
+
+  #tracking {
+    display: none;
+  }
+
+  #current {
+    border-bottom: 2px solid #333;
+  }
+
+  #app {
+    text-align: center;
+    font-family: 'Roboto';
+  }
+
+  #inputs {
+    margin-bottom: 0.5rem;
+  }
+
+  input,
+  button {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    cursor: pointer;
+    background-color: #eee;
+  }
+
+  button:hover {
+    border: 1px solid #666;
+    background-color: #444;
+    color: #fff;
+  }
+
+  .tweet {
+    margin: 1rem auto;
+    width: 30%;
+    padding: 0.6rem 0.8rem;
+    text-align: initial;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+
+  .tweet.animate {
+    animation: opacity .5s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes opacity {
+    from {
+      opacity: 0;
+      transform: translateX(-2rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .tweet a {
+    color: #333;
+    text-decoration: none;
+  }
+
+  .tweet a span {
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+
+  .tweet a p {
+    font-weight: 300;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <h1>Live tweet tracker</h1>
+    <br>
+    <span id="tracking">Currently tracking
+      <strong>
+        <em>
+          <span id="current">fitness</span>
+        </em>
+      </strong>
+    </span>
+    <br>
+    <br>
+    <div id="inputs">
+      <input type="text" placeholder="Search tweets" />
+      <button type="button" id="change-hashtags">Search</button>
+    </div>
+
+    <div id="tweets">
+    </div>
+  </div>
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+</body>
+
+</html>
