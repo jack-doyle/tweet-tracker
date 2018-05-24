@@ -1,7 +1,6 @@
 "use strict";
 
 import { Observable } from 'rxjs/Observable';
-import { saveBtn } from "./dom";
 
 export const events = {
     server: {
@@ -11,7 +10,8 @@ export const events = {
         CONNECT: "connect",
         RECONNECT: "reconnect",
         DISCONNECT: "disconnect",
-        UPDATE_TRACKING: "updateTracking"
+        UPDATE_TRACKING: "updateTracking",
+        SAMPLE: "sample"
     },
     ui: {
         INPUT: "input",
@@ -30,7 +30,5 @@ export function createObservables(socket) {
         reconnect$,
         disconnect$] = Object.values(events.server).map(e => onSocketEvent(e, socket));
 
-    const saveBtn$ = Observable.fromEvent(saveBtn, events.ui.CLICK);
-
-    return { tweet$, error$, warning$, connect$, reconnect$, disconnect$, saveBtn$ };
+    return { tweet$, error$, warning$, connect$, reconnect$, disconnect$ };
 }

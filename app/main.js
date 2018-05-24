@@ -1,41 +1,49 @@
 "use strict";
 
+import { Tweet } from "./tweet";
 import { Observable } from 'rxjs/Observable';
 import { events, createObservables } from "./events";
-import { inputsContainer, tweetsContainer, getInputs, makeTweet, presentTweet, updateCurrent } from "./dom";
-import { formatTweet } from "./helpers";
+import { inputsContainer, tweetsContainer, saveBtn, getInputs, makeTweet, presentTweet, updateCurrent } from "./dom";
+import { formatTweet, getTweetLocation, hasLocation } from "./util";
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { Subject } from 'rxjs';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/fromEventPattern';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/distinct';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/withLatestFrom';
+import { Subject } from 'rxjs/Subject';
+import { map } from "./map";
+require("./operators");
 
 const socket = io.connect("http://localhost:3000");
+const updateTracking = keywords => socket.emit(events.server.UPDATE_TRACKING, keywords);
 
-const input$ = Array.from(getInputs())
-    .map(input => Observable.fromEvent(input, events.ui.INPUT));
+// UI event observables
+const input$ = Array.from(getInputs()).map(input => Observable.fromEvent(input, events.ui.INPUT));
+const saveBtn$ = Observable.fromEvent(saveBtn, events.ui.CLICK);
 
+// Socket event observables
+const { tweet$, error$, warning$, connect$, reconnect$, disconnect$ } = createObservables(socket);
+
+// Search terms
 const keywords$ = combineLatest(input$)
     .map(events => events.map(e => e.target.value));
 
-const updateTracking = keywords => socket.emit(events.server.UPDATE_TRACKING, keywords);
+// const tweetMarker = L.divIcon({ className: 'tweet-marker' });
+// L.marker([53, 53], { icon: tweetMarker }).addTo(map);
 
-const { tweet$, error$, warning$, connect$, reconnect$, disconnect$, saveBtn$ } = createObservables(socket);
+const markers$ = new Subject();
 
 tweet$
-    .debounceTime(500)
-    .map(formatTweet)
-    .distinct(tweet => tweet.retweeted_status ? tweet.retweeted_status.id_str : undefined)
-    .subscribe(tweet => presentTweet(makeTweet(tweet)));
+    .map(tweet => new Tweet(tweet))
+    .filter(tweet => tweet.hasLocation())
+    .subscribe(tweet => {
+        const tweetMarker = L.divIcon({ className: 'tweet-marker' });
+        L.marker(tweet.coordinates, { icon: tweetMarker }).addTo(map);
+        markers$.next(tweetMarker);
+        presentTweet(makeTweet(tweet));
+    });
 
 saveBtn$
     .withLatestFrom(keywords$)
     .map(([_, keywords]) => keywords)
     .subscribe(keywords => {
-        updateTracking(keywords);
-        updateCurrent(keywords);
+        // updateTracking(keywords);
+        // updateCurrent(keywords);
+        socket.emit(events.server.SAMPLE);
     });

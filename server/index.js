@@ -3,6 +3,7 @@ require('dotenv').config()
 
 const path = require('path');
 const express = require('express');
+const cors = require("cors");
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -15,6 +16,7 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
 require("./socket")(io);
+require("./routes")(app);
 
 if (isDeveloping) {
   const compiler = webpack(config);
@@ -28,11 +30,17 @@ if (isDeveloping) {
       chunks: false,
       chunkModules: false,
       modules: false
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*'
     }
   });
 
+  app.use(cors());
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
+  app.use("/lib", express.static(path.join(__dirname, '../lib')));
+  app.use("/app", express.static(path.join(__dirname, '../app')));
   app.use(express.static(__dirname + '../app'));
 } else {
   app.use(express.static(path.join(__dirname, '../dist')));
