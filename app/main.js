@@ -48,3 +48,5 @@ saveBtn$
         // updateCurrent(keywords);
         socket.emit(events.server.SAMPLE);
     });
+
+socket.emit(events.server.SAMPLE);

@@ -18,6 +18,9 @@ const io = require("socket.io")(server);
 require("./socket")(io);
 require("./routes")(app);
 
+app.use("/lib", express.static(path.join(__dirname, '../lib')));
+app.use("/app", express.static(path.join(__dirname, '../app')));
+
 if (isDeveloping) {
   const compiler = webpack(config);
   const middleware = webpackMiddleware(compiler, {
@@ -39,8 +42,6 @@ if (isDeveloping) {
   app.use(cors());
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
-  app.use("/lib", express.static(path.join(__dirname, '../lib')));
-  app.use("/app", express.static(path.join(__dirname, '../app')));
   app.use(express.static(__dirname + '../app'));
 } else {
   app.use(express.static(path.join(__dirname, '../dist')));

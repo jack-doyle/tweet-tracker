@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Faster+One:100,300,400,700" rel="stylesheet">
   <link href="/lib/leaflet/leaflet.css" rel="stylesheet">
-  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' />
   <link href="/app/main.css" rel="stylesheet">
 </head>
 
@@ -17,22 +16,24 @@
   <div id="app">
     <h1>Live tweet tracker</h1>
     <br>
-    <span id="tracking">Currently tracking
-      <strong>
-        <em>
-          <span id="current">fitness</span>
-        </em>
-      </strong>
-    </span>
-    <div id="inputs">
-      <input type="text" placeholder="Search tweets" />
-      <button type="button" id="change-hashtags">Search</button>
+    <div id="tracking-info">
+      <span id="tracking">Currently tracking
+        <strong>
+          <em>
+            <span id="current">fitness</span>
+          </em>
+        </strong>
+      </span>
+      <div id="inputs">
+        <input type="text" placeholder="Search tweets" />
+        <button type="button" id="change-hashtags">Search</button>
+      </div>
     </div>
     <br>
     <br>
-    <div id="map"></div>
-
-    <div id="tweets">
+    <div id="container">
+      <div id="map"></div>
+      <div id="tweets"></div>
     </div>
   </div>
   <script src="/socket.io/socket.io.js"></script>

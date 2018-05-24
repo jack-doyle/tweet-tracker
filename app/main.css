@@ -4,8 +4,7 @@ body {
 
   h1,
   #tracking,
-  #inputs,
-  #tweets {
+  #inputs {
     text-align: center;
   }
 
@@ -13,6 +12,10 @@ body {
     font-size: 3rem;
     font-weight: 400;
     font-family: 'Faster One';
+  }
+
+  #tracking-info {
+    visibility: hidden;
   }
 
   #tracking {
@@ -23,10 +26,23 @@ body {
     border-bottom: 2px solid #333;
   }
 
+  #container {
+    display: flex;
+    padding: 0 3rem;
+  }
+
   #map {
+    flex-grow: 1;
     width: 70%;
     height: 500px;
     margin: 0 auto;
+  }
+
+  #tweets {
+    flex-basis: 30%;
+    height: 500px;
+    overflow: scroll;
+    border-top: 1px solid #eee;
   }
 
   #app {
@@ -55,8 +71,7 @@ body {
   }
 
   .tweet {
-    margin: 1rem auto;
-    width: 30%;
+    margin-bottom: 1rem;
     padding: 0.6rem 0.8rem;
     text-align: initial;
     background-color: #fff;
