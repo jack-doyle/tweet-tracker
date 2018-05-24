@@ -8,6 +8,8 @@ const Twitter = require('node-tweet-stream');
 Twitter.prototype.connectGet = function (url) {
     this.stale = false;
 
+    if (this.stream) return;
+
     this.stream = request.get({
         url,
         oauth: this.oauth
