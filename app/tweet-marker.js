@@ -1,13 +1,19 @@
 export class TweetMarker extends L.Marker {
-    constructor(latLng, opts) {
+    constructor(latLng, opts, map) {
         super(latLng, opts);
 
+        this.map = map;
         this.opacity = 1;
         this.opacityInterval = window.setInterval(this.decrementOpacity.bind(this), 100);
     }
 
     decrementOpacity() {
-        if (this.opacity === 0) return window.clearInterval(this.opacityInterval);
+        if (this.opacity <= 0) {
+            this.removeFrom(this.map);
+            window.clearInterval(this.opacityInterval);
+            return;
+        }
+
         if (this.opacity < 0.5) {
             this.setIcon(L.divIcon({ className: 'tweet-marker old' }));
         }

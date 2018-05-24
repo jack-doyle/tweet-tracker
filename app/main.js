@@ -35,7 +35,7 @@ tweet$
     .filter(tweet => tweet.hasLocation())
     .subscribe(tweet => {
         const tweetIcon = L.divIcon({ className: 'tweet-marker' });
-        const tweetMarker = new TweetMarker(tweet.coordinates, { icon: tweetIcon }).addTo(map);
+        const tweetMarker = new TweetMarker(tweet.coordinates, { icon: tweetIcon }, map).addTo(map);
         markers$.next(tweetMarker);
         presentTweet(makeTweet(tweet));
     });
