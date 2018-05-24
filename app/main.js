@@ -1,6 +1,7 @@
 "use strict";
 
 import { Tweet } from "./tweet";
+import { TweetMarker } from "./tweet-marker";
 import { Observable } from 'rxjs/Observable';
 import { events, createObservables } from "./events";
 import { inputsContainer, tweetsContainer, saveBtn, getInputs, makeTweet, presentTweet, updateCurrent } from "./dom";
@@ -33,8 +34,8 @@ tweet$
     .map(tweet => new Tweet(tweet))
     .filter(tweet => tweet.hasLocation())
     .subscribe(tweet => {
-        const tweetMarker = L.divIcon({ className: 'tweet-marker' });
-        L.marker(tweet.coordinates, { icon: tweetMarker }).addTo(map);
+        const tweetIcon = L.divIcon({ className: 'tweet-marker' });
+        const tweetMarker = new TweetMarker(tweet.coordinates, { icon: tweetIcon }).addTo(map);
         markers$.next(tweetMarker);
         presentTweet(makeTweet(tweet));
     });

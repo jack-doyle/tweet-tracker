@@ -103,6 +103,12 @@ body {
     height: 10px !important;
     width: 10px !important;
   }
+  .tweet-marker.old {
+    background: #ccc;
+  }
+  .tweet-marker.old:after {
+    box-shadow: 0 0 1px 2px #ccc;
+  }
   .tweet-marker:after {
     position: absolute;
     top: -50%;
