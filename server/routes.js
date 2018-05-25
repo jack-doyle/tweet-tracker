@@ -1,5 +1,5 @@
 const whitelist = new Set([
-    "MAPBOX_ACCESS_TOKEN"
+    "APP_URL"
 ]);
 
 module.exports = (app) => {
